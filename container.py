@@ -1,8 +1,6 @@
 """Assignment 1 - Container (Task 3)
-
 This file contains the classes representing the Container
 and Priority Queue data types.
-
 You are responsible for completing the 'add' method of
 PriorityQueue.
 """
@@ -10,13 +8,11 @@ PriorityQueue.
 
 class Container:
     """A container that holds objects.
-
     This is an abstract class. Only child classes should be instantiated.
     """
 
     def add(self, item):
         """Add <item> to this Container.
-
         @type self: Container
         @type item: object
         @rtype: None
@@ -25,7 +21,6 @@ class Container:
 
     def remove(self):
         """Remove and return a single item from this Container.
-
         @type self: Container
         @rtype: object
         """
@@ -33,7 +28,6 @@ class Container:
 
     def is_empty(self):
         """Return True iff this Container is empty.
-
         @type self: Container
         @rtype: bool
         """
@@ -42,18 +36,14 @@ class Container:
 
 class PriorityQueue(Container):
     """A queue of items that operates in priority order.
-
     Items are removed from the queue according to priority; the item with the
     highest priority is removed first. Ties are resolved in FIFO order,
     meaning the item which was inserted *earlier* is the first one to be
     removed.
-
     Priority is defined by the rich comparison methods for the objects in the
     container (__lt__, __le__, __gt__, __ge__).
-
     If x < y, then x has a *HIGHER* priority than y. (Intuitively, "priority 1"
     is more important than "priority 10".)
-
     All objects in the container must be of the same type.
     """
     # === Private Attributes ===
@@ -66,7 +56,6 @@ class PriorityQueue(Container):
 
     def __init__(self):
         """Initialize an empty PriorityQueue.
-
         @type self: PriorityQueue
         @rtype: None
         """
@@ -75,12 +64,9 @@ class PriorityQueue(Container):
 
     def remove(self):
         """Remove and return the next item from this PriorityQueue.
-
         Precondition: <self> should not be empty.
-
         @type self: PriorityQueue
         @rtype: object
-
         >>> pq = PriorityQueue()
         >>> pq.add('fred')
         >>> pq.add('arju')
@@ -101,10 +87,8 @@ class PriorityQueue(Container):
     def is_empty(self):
         """
         Return true iff this PriorityQueue is empty.
-
         @type self: PriorityQueue
         @rtype: bool
-
         >>> pq = PriorityQueue()
         >>> pq.is_empty()
         True
@@ -116,11 +100,9 @@ class PriorityQueue(Container):
 
     def add(self, item):
         """Add <item> to this PriorityQueue.
-
         @type self: PriorityQueue
         @type item: event type object
         @rtype: None
-
         >>> pq = PriorityQueue()
         >>> pq.add('fred')
         >>> pq.add('arju')
@@ -135,13 +117,20 @@ class PriorityQueue(Container):
 
     def _sorting(self):
         """this method sorts events
-
         the sort will be in chronological order of timestamps
         @rtype: none
         """
         #the for loops goes through every event in the item_list
 
         current_item = self.remove()
+        index = len(self._items) - 1
+
+        while current_item >= self._items[index]:
+            index -= 1
+
+        self._items.insert(index + 1, current_item)
+
+        """
         for index in range(len(self._items) - 1, -1, -1):
             #the individual events are passed to add method which sorts them and places them in
             #self._items list where they RIP waiting to be called
@@ -149,4 +138,5 @@ class PriorityQueue(Container):
             if current_item < self._items[index]:
                 self._items.insert(index + 1, current_item)
                 break
+        """
 
