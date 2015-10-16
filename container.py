@@ -123,20 +123,26 @@ class PriorityQueue(Container):
         #the for loops goes through every event in the item_list
 
         current_item = self.remove()
-        index = len(self._items) - 1
 
-        while current_item >= self._items[index]:
-            index -= 1
+        if current_item >= self._items[0]:
+            self._items.insert(0, current_item)
+        else:
+            for index in range(len(self._items) - 1, -1, -1):
+                print(index)
+                if current_item < self._items[index]:
+                    self._items.insert(index + 1, current_item)
+                    break
 
-        self._items.insert(index + 1, current_item)
 
-        """
-        for index in range(len(self._items) - 1, -1, -1):
-            #the individual events are passed to add method which sorts them and places them in
-            #self._items list where they RIP waiting to be called
-            print(index)
-            if current_item < self._items[index]:
-                self._items.insert(index + 1, current_item)
-                break
-        """
-
+"""
+if __name__ == '__main__':
+    pq = PriorityQueue()
+    print(pq.is_empty())
+    pq._items = [9, 7, 5, 2, 1]
+    pq.add(0)
+    print(pq._items)
+    pq.add(11)
+    print(pq._items)
+    pq.add(2)
+    print(pq._items)
+"""
