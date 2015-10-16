@@ -95,7 +95,8 @@ class PriorityQueue(Container):
         >>> pq.remove()
         'mona'
         """
-        return self._items.pop(0)
+        #pop last one
+        return self._items.pop()
 
     def is_empty(self):
         """
@@ -129,27 +130,23 @@ class PriorityQueue(Container):
         ['arju', 'fred', 'hat', 'mona']
         """
         # TODO: Implement this method.
-        if self.is_empty():
-            self._items.append(item)
-        else:
-            for index in range(len(self._items)): #for loop which compares item with every single item there is in the world
-                if item > self._items[index]: #the actual comparison of two events
-                    self._items.insert(index + 1, item) #add new event at their rightful place at last
+        self._items.append(item)
+        self._sorting()
 
-    def sorting(self, item_list):
+    def _sorting(self):
         """this method sorts events
 
-        the sorting will be in chronological order of timestamps
-        @type item_list: list[Event]
-        @rtype: list[Event]
+        the sort will be in chronological order of timestamps
+        @rtype: none
         """
         #the for loops goes through every event in the item_list
-        for index in range(len(item_list)):
+
+        current_item = self.remove()
+        for index in range(len(self._items) - 1, -1, -1):
             #the individual events are passed to add method which sorts them and places them in
             #self._items list where they RIP waiting to be called
-            self.add(item_list[index])
+            print(index)
+            if current_item < self._items[index]:
+                self._items.insert(index + 1, current_item)
+                break
 
-        return self._items
-
-    def equate(self):
-        return self._items

@@ -65,42 +65,45 @@ class GroceryStoreSimulation:
         initial_events = create_event_list(event_file)
 
         #counted number of customers from file directly
-        stats['num_customers'] = initial_events[0]
-        initial_events.pop(0)
+
 
         # TODO: Process all of the events, collecting statistics along the way.
 
-        #first, sort event from initial_events by timestamp
-        initial_events = self._events.sorting(initial_events)
+        #first, add event from initial_events to pq then sort using sort method
+        for index in range (len(initial_events)):
+            self._events.add(initial_events[index])
 
 
 
         #second, pass sorted events which is inside PQ to store
 
-        while len(initial_events) > 0:
+        while not self._events.is_empty():
 
             #trigger the do function which checks if new events spawn in the store
             #new events are returned
             #setup simulation clock, advance clock to first event
 
+            current_event = self._events.remove()
             #when there is only one event left, equate the time
-            if len(initial_events) == 1:
-                stats['total_time'] = initial_events[0].timestamp
+            if self._events.is_empty():
+                stats['total_time'] = current_event.timestamp
 
-            new_event = initial_events[0].do(self._store)
+            #the event is triggered
+            returned_tuple = current_event.do(self._store)
 
+            if returned_tuple[1] == 'int':
+                stats['max_wait'] = returned_tuple[0]
+            elif returned_tuple[1] == 'one event':
+                self._events.add(returned_tuple[0])
+            elif returned_tuple[1] == 'event list':
+                for item in returned_tuple[0]:
+                    self._events.add(item)
 
-            #the event that was passed on to the store is removed
-
-            self._events.remove()
-
-            #if a new event is spawned, add it into PQ and update initial_events
-
-            if new_event != None:
-                self._events.add(new_event)
-                initial_events = self._events.equate()
 
         return stats
+
+    def handle_new_event(self, item):
+        self._events.add(item)
 
 
 # We have provided a bit of code to help test your work.

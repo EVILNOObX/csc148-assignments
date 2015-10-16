@@ -193,10 +193,10 @@ class New_Customer(Event):
         """Over riding the do method from super class
 
         @type store: GroceryStore
-        @rtype: Event
+        @rtype: tuple(event, str)
             returns a checkout_begins event
         """
-        return store.new_customer(self)
+        return (store.new_customer(self), 'one event')
 
 class Checkout_Begins(Event):
     """Subclass of event
@@ -208,10 +208,10 @@ class Checkout_Begins(Event):
         """basically same as do method for New_Customer
 
         @type store: GroceryStore
-        @rtype: Event
+        @rtype: tuple(Event, str)
             returns a checkout_finish event
         """
-        return store.checkout_begins(self)
+        return (store.checkout_begins(self), 'one event')
 
 class Checkout_Finish(Event):
     """Subclass of event
@@ -225,11 +225,11 @@ class Checkout_Finish(Event):
         """similar method as the do for the other sub classes
 
         @type store: GroceryStore
-        @rtype: int
+        @rtype: tuple(int, str)
             returns the total wait time for
             for this customer checkout
         """
-        return store.checkout_finish(self)
+        return (store.checkout_finish(self), 'int')
 
 class Line_Close(Event):
     """ Subclass of event
@@ -249,12 +249,12 @@ class Line_Close(Event):
         their time_waited
 
         @type store: GroceryStore
-        @rtype: list[Event]
+        @rtype: tuple(list[Event], str)
             this list of events contain the the new customer events in order
             which is from last to first, with one second intervals
         """
 
-        return store.line_close(self)
+        return (store.line_close(self), 'event list')
 
 # TODO: Complete this function, which creates a list of events from a file.
 def create_event_list(filename):
